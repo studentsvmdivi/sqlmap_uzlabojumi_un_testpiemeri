@@ -1,1 +1,1 @@
-# sqlmap_uzlabojumi_un_testpiemeri
+Saturu pievienošu šodien nedaudz vēlāk.
