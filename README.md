@@ -1,0 +1,1 @@
+# sqlmap_uzlabojumi_un_testpiemeri
