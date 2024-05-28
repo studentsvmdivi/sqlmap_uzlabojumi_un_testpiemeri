@@ -1,3 +1,6 @@
+<h2><b>This repo contains testcase results for <u>ethical</u> hacking resarch</b></h2>
+
+
 Info for whoever thinks this is for malicious purposes because it contains SQL injection vulnerability results. Those are test cases for my bachelor's work. If you inspect the file contents you will see that the specified URLs for the detected vulnerabilites are mostly IP addresses like 192.168.17.134 or localhost, except for hackazon.lc. It was ip address which I did name for my own testing purposes. If you try to find a site "hackazon.lc" online you will find that it doesn't exist. For more proof of it being ethical hacking I will provide the sources of the testing servers:
 1. Hackazon: https://github.com/rapid7/hackazon 
 2. Owasp Juice Shop: https://github.com/juice-shop/juice-shop
