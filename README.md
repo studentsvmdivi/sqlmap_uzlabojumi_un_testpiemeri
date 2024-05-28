@@ -8,7 +8,7 @@ Info for whoever thinks this is for malicious purposes because it contains SQL i
 Risinājumu installācijas instrukcijas:
 Lai instalētu risinājumu, nepieciešams to ievietot direktorijā "sqlmap/lib/utils". Pēc tam failā "sqlmap/lib/controller/checks.py" jāpievieno atbilstošu importēšanas rindiņu: "from lib.utils.isInjection import isInjection as isInjection", "from lib.utils.isInjection import debug_isInjection as isInjection" vai "from lib.utils.isInjection import clear_isInjection as isInjection", atkarībā no izvēlētā risinājuma. Funkcionālajai un debug versijai papildus jāievieto fails "make_string_equal.py" direktorijā "sqlmap/lib/utils". Kad risinājums ir importēts, rindas no 532. līdz 580. jāaizstāj ar 6.1.1. attēla kodu .
 
-<b>6.1.1. attēls:<b>
+<b>6.1.1. attēls:</b>
 
 ![standart_installation.image](images/standart_installation.png) 
 
@@ -21,7 +21,7 @@ Lai instalētu risinājumu, nepieciešams to ievietot direktorijā "sqlmap/lib/u
 
 Ja vēlamies redzēt vidējo isInjection ātrumu, tad vajag lietot “debug_risinajuma_nosaukums.py” risinājuma versiju un 136. rindiņā (tieši pirms “while tests:”) ievietot kodu “totalDuration = 0; sentPayloads = 0”, kurš arī redzams 6.1.2. attēlā zemāk, un 532. līdz 580. rindiņu vajag aizvietot ar kodu, kurš redzams 6.1.3. attēlā (un kuru arī ir iespējams iekopēt no github repozitorijas README.md faila (https://github.com/studentsvmdivi/sqlmap_uzlabojumi_un_testpiemeri/)).
 
-<b>6.1.2. attēls:<b>
+<b>6.1.2. attēls:</b>
 
 ![instalationless_debug_instructions_step_1.image](images/debuggable_installation_step_1.png) 
 
@@ -31,7 +31,7 @@ Ja vēlamies redzēt vidējo isInjection ātrumu, tad vajag lietot “debug_risi
     sentPayloads = 0
 ```
 
-<b>6.1.3. attēls:<b>
+<b>6.1.3. attēls:</b>
 
 ![instalationless_debug_instructions_step_2.image](images/debuggable_installation_step_2.png) 
 
@@ -47,7 +47,7 @@ Ja vēlamies redzēt vidējo isInjection ātrumu, tad vajag lietot “debug_risi
 
 Ja vēlamies redzēt oriģinālā risinājuma ātrdabību, tad vajag atrast ar CTRL+F 6.1.4., 6.1.5. un 6.1.6. attēlā redzamās vietas un ievietot kodu, kurš atzīmēts 6.1.4., 6.1.5. un 6.1.6. attēlā ar sarkanu rāmīti. </b>KĀ ARĪ 136. rindiņā (tieši pirms “while tests:”) ievietot kodu “totalDuration = 0; sentPayloads = 0”, kurš arī redzams 6.1.2. attēlā zemāk</b>
 
-<b>6.1.4. attēls:<b>
+<b>6.1.4. attēls:</b>
 
 ![instalationless_debug_instructions_step_1.image](images/instalationless_debug_instructions_step_1.png) 
 
@@ -58,7 +58,7 @@ Ja vēlamies redzēt oriģinālā risinājuma ātrdabību, tad vajag atrast ar C
                             logger.info(infoMsg)
 ```
 
-<b>6.1.5. attēls:<b>
+<b>6.1.5. attēls:</b>
 
 ![instalationless_debug_instructions_step_2.image](images/instalationless_debug_instructions_step_2.png) 
 
@@ -66,7 +66,7 @@ Ja vēlamies redzēt oriģinālā risinājuma ātrdabību, tad vajag atrast ar C
                             start_time_ns = time.perf_counter_ns()
 ```
 
-<b>6.1.6. attēls:<b>
+<b>6.1.6. attēls:</b>
 
 ![instalationless_debug_instructions_step_3.image](images/instalationless_debug_instructions_step_3.png) 
 
