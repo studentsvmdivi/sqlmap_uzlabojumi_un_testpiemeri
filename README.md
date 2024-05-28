@@ -21,7 +21,6 @@ Lai instalētu risinājumu, nepieciešams to ievietot direktorijā "sqlmap/lib/u
 
 Ja vēlamies redzēt vidējo isInjection ātrumu, tad vajag lietot “debug_risinajuma_nosaukums.py” risinājuma versiju un 136. rindiņā (tieši pirms “while tests:”) ievietot kodu “totalDuration = 0; sentPayloads = 0”, kurš arī redzams 6.1.2. attēlā zemāk, un 532. līdz 580. rindiņu vajag aizvietot ar kodu, kurš redzams 6.1.3. attēlā (un kuru arī ir iespējams iekopēt no github repozitorijas README.md faila (https://github.com/studentsvmdivi/sqlmap_uzlabojumi_un_testpiemeri/)).
 
-
 <b>6.1.2. attēls:<b>
 
 ![instalationless_debug_instructions_step_1.image](images/instalationless_debug_instructions_step_1.png) 
@@ -34,6 +33,9 @@ Ja vēlamies redzēt vidējo isInjection ātrumu, tad vajag lietot “debug_risi
 
 <b>6.1.3. attēls:<b>
 
+![instalationless_debug_instructions_step_2.image](images/instalationless_debug_instructions_step_2.png) 
+
+
 ```python
                             if isInj:
                                 avgDuration = totalDuration / sentPayloads
@@ -43,6 +45,19 @@ Ja vēlamies redzēt vidējo isInjection ātrumu, tad vajag lietot “debug_risi
                                 logger.info(infoMsg)
 ```
 
+Ja vēlamies redzēt oriģinālā risinājuma ātrdabību, tad vajag atrast ar CTRL+F 6.1.4., 6.1.5. un 6.1.6. attēlā redzamās vietas un ievietot kodu, kurš atzīmēts 6.1.4., 6.1.5. un 6.1.6. attēlā ar sarkanu rāmīti.
+
+<b>6.1.4. attēls:<b>
+
+![instalationless_debug_instructions_step_1.image](images/instalationless_debug_instructions_step_1.png) 
+
+<b>6.1.5. attēls:<b>
+
 ![instalationless_debug_instructions_step_2.image](images/instalationless_debug_instructions_step_2.png) 
+
+<b>6.1.6. attēls:<b>
+
+![instalationless_debug_instructions_step_3.image](images/instalationless_debug_instructions_step_3.png) 
+
 
 <h2><b>Testpiemērus tulīt pievienošu pēc vienas studnas. Pagaidām mēģinu tikt galā risinājumu instrukciju rakstīšanu.</b></h2>
