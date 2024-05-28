@@ -45,7 +45,7 @@ Ja vēlamies redzēt vidējo isInjection ātrumu, tad vajag lietot “debug_risi
                                 logger.info(infoMsg)
 ```
 
-Ja vēlamies redzēt oriģinālā risinājuma ātrdabību, tad vajag atrast ar CTRL+F 6.1.4., 6.1.5. un 6.1.6. attēlā redzamās vietas un ievietot kodu, kurš atzīmēts 6.1.4., 6.1.5. un 6.1.6. attēlā ar sarkanu rāmīti. </b>KĀ ARĪ 136. rindiņā (tieši pirms “while tests:”) ievietot kodu “totalDuration = 0; sentPayloads = 0”, kurš arī redzams 6.1.2. attēlā zemāk</b>
+Ja vēlamies redzēt oriģinālā risinājuma ātrdabību, tad vajag atrast ar CTRL+F 6.1.4., 6.1.5. un 6.1.6. attēlā redzamās vietas un ievietot kodu, kurš atzīmēts 6.1.4., 6.1.5. un 6.1.6. attēlā ar sarkanu rāmīti. <b>KĀ ARĪ 136. rindiņā (tieši pirms “while tests:”) ievietot kodu “totalDuration = 0; sentPayloads = 0”, kurš arī redzams 6.1.2. attēlā zemāk</b>
 
 <b>6.1.4. attēls:</b>
 
