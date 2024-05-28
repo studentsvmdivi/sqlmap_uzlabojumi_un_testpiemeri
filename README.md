@@ -23,7 +23,7 @@ Ja vēlamies redzēt vidējo isInjection ātrumu, tad vajag lietot “debug_risi
 
 <b>6.1.2. attēls:<b>
 
-![instalationless_debug_instructions_step_1.image](images/instalationless_debug_instructions_step_1.png) 
+![instalationless_debug_instructions_step_1.image](images/debuggable_installation_step_1.png) 
 
 
 ```python
@@ -33,7 +33,7 @@ Ja vēlamies redzēt vidējo isInjection ātrumu, tad vajag lietot “debug_risi
 
 <b>6.1.3. attēls:<b>
 
-![instalationless_debug_instructions_step_2.image](images/instalationless_debug_instructions_step_2.png) 
+![instalationless_debug_instructions_step_2.image](images/debuggable_installation_step_2.png) 
 
 
 ```python
