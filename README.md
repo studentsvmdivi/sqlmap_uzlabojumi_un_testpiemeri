@@ -26,7 +26,22 @@ Ja vēlamies redzēt vidējo isInjection ātrumu, tad vajag lietot “debug_risi
 
 ![instalationless_debug_instructions_step_1.image](images/instalationless_debug_instructions_step_1.png) 
 
+
+```python
+    totalDuration = 0
+    sentPayloads = 0
+```
+
 <b>6.1.3. attēls:<b>
+
+```python
+                            if isInj:
+                                avgDuration = totalDuration / sentPayloads
+                                injectable = True
+                                infoMsg = "%sparameter '%s' appears to be '%s' injectable (with --string=\"%s\")" % ("%s " % paramType if paramType != parameter else "", parameter, title, repr(conf.string).lstrip('u').strip("'"))
+                                infoMsg += "\n\033[0maverage duration: %s nanoseconds" % (avgDuration)
+                                logger.info(infoMsg)
+```
 
 ![instalationless_debug_instructions_step_2.image](images/instalationless_debug_instructions_step_2.png) 
 
