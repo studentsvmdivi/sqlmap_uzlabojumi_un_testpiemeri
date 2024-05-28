@@ -1,1 +1,1 @@
-<h2><b>Saturu pievienošu šodien nedaudz vēlāk.</b></h2>
+<h2><b>Testpiemērus tulīt pievienošu pēc vienas studnas. Pagaidām mēģinu tikt galā risinājumu instrukciju rakstīšanu.</b></h2>
