@@ -8,7 +8,8 @@ Info for whoever thinks this is for malicious purposes because it contains SQL i
 Risinājumu installācijas instrukcijas:
 Lai instalētu risinājumu, nepieciešams to ievietot direktorijā "sqlmap/lib/utils". Pēc tam failā "sqlmap/lib/controller/checks.py" jāpievieno atbilstošu importēšanas rindiņu: "from lib.utils.isInjection import isInjection as isInjection", "from lib.utils.isInjection import debug_isInjection as isInjection" vai "from lib.utils.isInjection import clear_isInjection as isInjection", atkarībā no izvēlētā risinājuma. Funkcionālajai un debug versijai papildus jāievieto fails "make_string_equal.py" direktorijā "sqlmap/lib/utils". Kad risinājums ir importēts, rindas no 532. līdz 580. jāaizstāj ar 6.1.1. attēla kodu .
 
-6.1.1. attēls:
+<b>6.1.1. attēls:<b>
+
 ![standart_installation.image](images/standart_installation.png)
 
 
