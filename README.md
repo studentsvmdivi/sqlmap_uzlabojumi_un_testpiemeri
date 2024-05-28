@@ -51,13 +51,35 @@ Ja vēlamies redzēt oriģinālā risinājuma ātrdabību, tad vajag atrast ar C
 
 ![instalationless_debug_instructions_step_1.image](images/instalationless_debug_instructions_step_1.png) 
 
+```python
+                        if method != PAYLOAD.METHOD.COMPARISON:
+                            avgDuration = totalDuration / sentPayloads
+                            infoMsg = "\n\033[0maverage duration: %s nanoseconds]" % (avgDuration)
+                            logger.info(infoMsg)
+```
+
 <b>6.1.5. attēls:<b>
 
 ![instalationless_debug_instructions_step_2.image](images/instalationless_debug_instructions_step_2.png) 
+
+```python
+                            start_time_ns = time.perf_counter_ns()
+```
 
 <b>6.1.6. attēls:<b>
 
 ![instalationless_debug_instructions_step_3.image](images/instalationless_debug_instructions_step_3.png) 
 
+```python
+                            end_time_ns = time.perf_counter_ns()
+                            duration = (end_time_ns - start_time_ns)
+                            print(f"Execution time: {duration} nanoseconds")
+                            totalDuration += duration
+                            sentPayloads += 1
+                            if injectable:
+                                avgDuration = totalDuration / sentPayloads
+                                infoMsg = "\n033[0maverage duration: %s nanoseconds" % (avgDuration)
+                                logger.info(infoMsg)
+```
 
 <h2><b>Testpiemērus tulīt pievienošu pēc vienas studnas. Pagaidām mēģinu tikt galā risinājumu instrukciju rakstīšanu.</b></h2>
