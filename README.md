@@ -17,7 +17,7 @@ Lai instalētu risinājumu, nepieciešams to ievietot direktorijā "sqlmap/lib/u
                                 injectable = True
                                 infoMsg = "%sparameter '%s' appears to be '%s' injectable (with --string=\"%s\")" % ("%s " % paramType if paramType != parameter else "", parameter, title, repr(conf.string).lstrip('u').strip("'"))
                                 logger.info(infoMsg)
-`` `
+```
 
 
 <h2><b>Testpiemērus tulīt pievienošu pēc vienas studnas. Pagaidām mēģinu tikt galā risinājumu instrukciju rakstīšanu.</b></h2>
